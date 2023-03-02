@@ -8,7 +8,7 @@ class CState(Enum):
 
 
 class Cell:
-    def __init__(self, pos, state):
+    def __init__(self, pos: tuple[int, int], state: list[CState]):
         self.pos = pos
         self.heuristic = 0
         self.visited = 0
@@ -79,6 +79,17 @@ def calc_heuristic(cells, graph_map, remembered, start, cur, max_depth):
 
 
 def clear_heuristic(cells, graph_map, remembered, cur, max_depth):
+    """Clear heuristic value of every Cell in PacMan's current sight.
+
+    Use Depth-First Search to traverse to every Cell in PacMan's current sight.
+
+    :param cells:
+    :param graph_map:
+    :param remembered:
+    :param cur:
+    :param max_depth:
+    :return:
+    """
     remembered.append(cur.pos)
 
     if max_depth <= 0:
@@ -88,6 +99,9 @@ def clear_heuristic(cells, graph_map, remembered, cur, max_depth):
         if child.pos not in remembered:
             child.reset_heuristic()
 
+            # Nhan: Shouldn't `remembered` be passed down directly instead?
+            # Passing down a copy still preserve the function's completeness,
+            # but a Cell can be visited many times redundantly.
             clear_heuristic(cells, graph_map, remembered.copy(), child, max_depth - 1)
 
 
@@ -120,6 +134,15 @@ def update_heuristic(cells, graph_map, remembered, start, cur, max_depth, cell_t
 
 
 def local_search(cells, graph_map, pacman_pos):
+    """Calculate heuristic values of every Cell in PacMan's current sight (3 cells away)
+    and choose one Cell adjacent to PacMan that has the highest heuristic.
+
+    :param cells: The map's Cell matrix.
+    :param graph_map: Adjacency list of the map.
+    :param pacman_pos: PacMan's current position.
+    :return: The Cell with highest heuristic value.
+    """
+    # Record visited Cells in DFS traversal.
     remembered = [] 
     clear_heuristic(cells, graph_map, remembered, pacman_pos, 3)
 

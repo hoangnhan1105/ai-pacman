@@ -33,6 +33,11 @@ def search(graph, start, goal):
             h_state = heuristic(node[1], goal)
             h_child_state = heuristic(child_state, goal)
 
+            # f(current) = node[0]
+            # h(current) = h_state
+            # -> g(current) = f(current) - h(current) = node[0] - h_state
+            # Cost of every segment connecting 2 adjacent points is 1.
+            # -> g(child) = g(current) + 1
             if visited[child_state] == V.NOT_VISITED:
                 frontier.put((node[0] - h_state + 1 + h_child_state, child_state, node[1]))
                 visited[child_state] = V.FRONTIER

@@ -69,6 +69,7 @@ class Pacman:
         for neighbor_cell in graph_map[self.cell]:
             self.recursive_observe(graph_map, self.cell, neighbor_cell, sight - 1)
 
+        # List of food cells in PacMan's sight near monster cells also in PacMan's sight.
         nearby_monster_food_cell_list = []
         for food_cell_in_sight in self.food_cell_in_sight_list:
             if self.nearby_monster_cell(food_cell_in_sight):
@@ -83,6 +84,7 @@ class Pacman:
                 self.food_cell_in_brain_list.pop(index)
                 self.path_to_food_cell_in_brain_list.pop(index)
 
+        # Ignore food cells near monsters.
         for nearby_monster_food_cell in nearby_monster_food_cell_list:
             self.food_cell_in_sight_list.remove(nearby_monster_food_cell)
 
@@ -90,6 +92,8 @@ class Pacman:
         for food_cell_in_sight in self.food_cell_in_sight_list:
             for index in range(len(self.food_cell_in_brain_list)):
                 if food_cell_in_sight == self.food_cell_in_brain_list[index]:
+                    # Nhan: Why don't use .pop(index) ?? (trivial)
+                    # Can food_cell_in_sight be duplicated in food_cell_in_brain ?
                     self.food_cell_in_brain_list.remove(self.food_cell_in_brain_list[index])
                     self.path_to_food_cell_in_brain_list.remove(self.path_to_food_cell_in_brain_list[index])
                     break
@@ -98,6 +102,11 @@ class Pacman:
 
 
     def nearby_monster_cell(self, food_cell):
+        """Check if a food cell is near a monster cell in PacMan's sight.
+
+        :param food_cell:
+        :return:
+        """
         for monster_cell in self.monster_cell_in_sight_list:
             if abs(monster_cell.pos[0] - food_cell.pos[0]) + abs(monster_cell.pos[1] - food_cell.pos[1]) <= 2:
                 return True
@@ -106,6 +115,10 @@ class Pacman:
 
 
     def empty_brain(self):
+        """Check if PacMan doesn't have any memory about any uneaten food.
+
+        :return:
+        """
         return len(self.food_cell_in_brain_list) == 0
 
 
@@ -114,6 +127,10 @@ class Pacman:
 
 
     def have_food_in_cur_sight(self):
+        """Check if PacMan sees any food in its current sight.
+
+        :return:
+        """
         return len(self.food_cell_in_sight_list) != 0
 
 

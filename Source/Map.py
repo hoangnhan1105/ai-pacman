@@ -14,6 +14,21 @@ def input_raw(map_input_path):
 
 
 def read_map_level_1(map_input_path):
+    """
+    Parameters:
+    ---------
+    map_input_path : str
+        Path to text map.
+
+    Returns:
+    ---------
+    graph_map : dict[tuple[int, int], list[None | tuple[int, int]]]
+        Neighbor empty squares of every empty square on the map.
+    pacman_pos : tuple[int, int]
+        PacMan initial square.
+    food_pos : tuple[int, int]
+        Food square.
+    """
     pacman_pos, raw_map = input_raw(map_input_path)
     food_pos = None
 

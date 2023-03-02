@@ -216,6 +216,8 @@ class MyApp:
                 pacman.cell.pacman_leave()
                 pacman.observe(graph_map, 3)
 
+                # If PacMan doesn't see any food in his current sight, but still has memory
+                # about uneaten foods elsewhere...
                 if not pacman.empty_brain() and not pacman.have_food_in_cur_sight():
                     # Pacman tracks the peas which leads to one of Food that Pacman saw in the past.
                     pacman.cell = pacman.back_track(graph_map)
