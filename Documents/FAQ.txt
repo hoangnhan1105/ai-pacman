@@ -1,0 +1,14 @@
+AI Pacman
+FREQUENTLY ASKED QUESTIONS
+
+Q: From Level 3 upwards (when there are many foods), where does the Pacman go when there's no food in his sight and there's no uneaten food location in his memory either (i.e., there's food which Pacman hasn't seen yet and it isn't in his current sight either)?
+A: To be honest, we didn't test and analyze this scenario, because all the maps we designed have foods spread out continuously, so Pacman will constantly see foods and always have food memory in his head.
+	But if we analyze the source code of our implementation and guess what'd happen, then it'd probably go like this. First, when PacMan doesn't have any food in memory, he'll travel using heuristic. Since there's no food in his sight (and assuming there's no monster either, otherwise he'd choose to stay away from them), the heuristic of all cells in sight is 0. So now it depends on the `visited` value of each cell, which is the number of times the cell has been visited during the whole game (because f(n) = h(n) - v(n), according to our formula). Which cell has been visited the least (among the 4 adjacent to PacMan) will be chosen to go to. And in the extreme case when `visited` can't even break the tie, it has to resort to that whichever cell is stored first in the map's adjacency list will be picked.
+
+Q: When PacMan backtracks, which food among those in his memory will he choose to backtrack to first?
+A: He'll always backtrack to the most recently seen food first. Because it's also the nearest food among those in his memory.
+
+Q: Does the game apply threads/concurrency?
+A: No. The PacMan processing algorithm and the game screen rendering are carried out sequentially and alternatingly.
+
+Note: Regarding the Peas Tracking algorithm, there are also some notes made in the report to further explain some characteristics of the algorithm.
